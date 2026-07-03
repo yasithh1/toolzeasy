@@ -158,7 +158,7 @@ function renderToolPage() {
     <section class="tool-page-wrap">
       <div class="tool-shell">
         <div class="tool-shell-top">
-          <a class="back-link" href="index.html#tools">All tools</a>
+          <a class="back-link" href="/#tools">All tools</a>
           <span>${tool.category}</span>
         </div>
         <div class="tool-body">${toolMarkup(tool)}</div>
