@@ -1,5 +1,4 @@
 const tools = [
-  ["PDF Merge", "PDF", "file-plus-2", "Combine multiple PDF files into one document."],
   ["PDF Split", "PDF", "scissors", "Extract selected pages from a PDF file."],
   ["PDF Compress", "PDF", "archive", "Optimize a PDF and download a new copy."],
   ["PDF to Word", "PDF", "file-text", "Export readable PDF text as a Word document."],
@@ -48,8 +47,6 @@ const tools = [
 }));
 
 const routeAliases = {
-  "merge-pdf": "pdf-merge",
-  "merger-pdf": "pdf-merge",
   "split-pdf": "pdf-split",
   "compress-pdf": "pdf-compress",
   "rotate-pdf": "pdf-rotate",
@@ -201,7 +198,7 @@ function toolMarkup(tool) {
 
 function pdfToolMarkup(tool) {
   const accepts = tool.name === "JPG to PDF" ? "image/jpeg,image/png" : tool.name === "Word to PDF" ? ".txt,.doc,.docx" : ".pdf";
-  const multiple = ["PDF Merge", "JPG to PDF"].includes(tool.name) ? "multiple" : "";
+  const multiple = tool.name === "JPG to PDF" ? "multiple" : "";
   const pageControls = tool.name === "PDF Split" ? `<input class="control" id="pdfPages" placeholder="Pages, example: 1-3,5">` : "";
   const passwordControl = tool.name === "PDF Protect" ? `<input class="control" id="pdfPassword" type="password" placeholder="Password">` : "";
   const signatureControl = tool.name === "PDF Signature" ? `
@@ -496,7 +493,6 @@ async function runPdfTool(tool, root, result) {
   if (!files.length) return setResult(result, "Choose a file first.");
   try {
     setResult(result, "Processing...");
-    if (tool.name === "PDF Merge") return pdfMerge(files, result, download);
     if (tool.name === "PDF Split") return pdfSplit(files[0], root, result, download);
     if (tool.name === "PDF Compress") return pdfCompress(files[0], result, download);
     if (tool.name === "PDF to Word") return pdfToWord(files[0], result, download);
@@ -514,18 +510,6 @@ async function runPdfTool(tool, root, result) {
 function requirePdfLib() {
   if (!window.PDFLib) throw new Error("PDF library is still loading. Check internet connection and try again.");
   return window.PDFLib;
-}
-
-async function pdfMerge(files, result, download) {
-  const { PDFDocument } = requirePdfLib();
-  const merged = await PDFDocument.create();
-  for (const file of files) {
-    const source = await PDFDocument.load(await file.arrayBuffer(), { ignoreEncryption: true });
-    const copied = await merged.copyPages(source, source.getPageIndices());
-    copied.forEach((page) => merged.addPage(page));
-  }
-  setDownload(download, await merged.save({ useObjectStreams: true }), "toolzeasy-merged.pdf", "application/pdf");
-  setResult(result, `Merged ${files.length} PDF file${files.length === 1 ? "" : "s"}.`);
 }
 
 async function pdfSplit(file, root, result, download) {

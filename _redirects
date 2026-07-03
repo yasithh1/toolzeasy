@@ -1,6 +1,3 @@
-/pdf-merge /tool.html?tool=pdf-merge 200
-/merge-pdf /tool.html?tool=pdf-merge 200
-/merger-pdf /tool.html?tool=pdf-merge 200
 /pdf-split /tool.html?tool=pdf-split 200
 /split-pdf /tool.html?tool=pdf-split 200
 /pdf-compress /tool.html?tool=pdf-compress 200
