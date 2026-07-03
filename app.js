@@ -56,7 +56,7 @@ const routeAliases = {
 };
 
 function toolHref(tool) {
-  if (location.protocol === "file:") return `tool.html?tool=${tool.id}`;
+  if (location.protocol === "file:") return `${tool.id}.html`;
   return `/${tool.id}`;
 }
 

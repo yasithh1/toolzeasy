@@ -12,7 +12,7 @@ Deploy this folder directly to Cloudflare Pages.
 
 ## Notes
 
-Text, utility, image and several PDF tools run in the browser. Each tool opens on its own `tool.html?tool=...` URL while the homepage keeps the full tools grid.
+Text, utility, image and several PDF tools run in the browser. Each tool opens on its own clean URL like `/pdf-merge` or `/qr-code-generator` while the homepage keeps the full tools grid.
 
 Notes:
 
