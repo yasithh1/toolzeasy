@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Contact ToolzEasy</title>
-    <meta name="description" content="Contact ToolzEasy for feedback, bug reports and support questions.">
+    <meta name="description" content="Contact ToolzEasy privately for questions, bug reports and feature requests.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -14,33 +14,67 @@
     <header class="site-header">
       <a class="brand" href="index.html"><span class="brand-mark">T</span><span>ToolzEasy</span></a>
       <nav class="nav-links nav-menu" aria-label="Primary navigation">
-        <div class="nav-group"><a href="index.html#tools">PDF</a><div class="nav-dropdown"><a href="tool.html?tool=pdf-merge">PDF Merge</a><a href="tool.html?tool=pdf-split">PDF Split</a><a href="tool.html?tool=pdf-compress">PDF Compress</a><a href="tool.html?tool=pdf-signature">PDF Signature</a></div></div>
+        <div class="nav-group"><a href="index.html#tools">PDF</a><div class="nav-dropdown"><a href="tool.html?tool=pdf-split">PDF Split</a><a href="tool.html?tool=pdf-merge">PDF Merge</a><a href="tool.html?tool=pdf-to-jpg">PDF to JPG</a><a href="tool.html?tool=pdf-signature">PDF Signature</a></div></div>
         <div class="nav-group"><a href="index.html#tools">Image</a><div class="nav-dropdown"><a href="tool.html?tool=image-resize">Image Resize</a><a href="tool.html?tool=image-crop">Image Crop</a><a href="tool.html?tool=blur-or-pixelate-area">Blur or Pixelate</a><a href="tool.html?tool=image-watermark">Image Watermark</a></div></div>
         <div class="nav-group"><a href="index.html#tools">Utility</a><div class="nav-dropdown"><a href="tool.html?tool=qr-code-generator">QR Code Generator</a><a href="tool.html?tool=password-generator">Password Generator</a><a href="tool.html?tool=invoice-generator">Invoice Generator</a><a href="tool.html?tool=unit-converter">Unit Converter</a></div></div>
         <a href="about.html">About</a><a href="privacy.html">Privacy</a>
       </nav>
     </header>
     <main>
-      <section class="page-hero">
+      <section class="contact-hero">
         <p class="eyebrow">Contact</p>
-        <h1>Send feedback or report a tool issue</h1>
-        <p class="hero-text">If a tool does not work as expected, include the tool name, browser, device, and what happened.</p>
+        <h1>What can we help with?</h1>
+        <p>Questions, bug reports and feature requests go directly to ToolzEasy support.</p>
       </section>
-      <section class="page-content">
-        <article class="content-card"><h2>Email</h2><p>After buying the domain, create a support email such as <strong>support@toolzeasy.com</strong> and place it here before applying for AdSense.</p><p>Temporary contact: <a href="mailto:support@toolzeasy.com">support@toolzeasy.com</a></p></article>
-        <article class="content-card"><h2>Bug reports</h2><p>For file tools, never send private files unless you are comfortable sharing them. A screenshot of the error and a short description is usually enough.</p></article>
+      <section class="contact-form-section">
+        <form class="contact-form-card" id="contactForm">
+          <label class="contact-field">
+            <span>Message type</span>
+            <select id="contactType" required>
+              <option value="Bug report">Bug report</option>
+              <option value="Tool not working">Tool not working</option>
+              <option value="Feature request">Feature request</option>
+              <option value="Question">Question</option>
+            </select>
+          </label>
+          <label class="contact-field">
+            <span>Message</span>
+            <textarea id="contactMessage" rows="7" placeholder="Tell me the tool name, what happened, and what browser/device you used." required></textarea>
+          </label>
+          <label class="contact-field">
+            <span>Email</span>
+            <input id="contactEmail" type="email" placeholder="Your email so I can reply" required>
+          </label>
+          <label class="contact-check">
+            <input id="contactAgree" type="checkbox" required>
+            <span>I understand this message opens my email app and sends the details to ToolzEasy support.</span>
+          </label>
+          <button class="button primary contact-submit" type="submit">Send message</button>
+          <p class="contact-note">Your message is private and is not shown publicly on the website.</p>
+        </form>
       </section>
     </main>
     <footer class="site-footer">
       <div class="footer-inner">
         <div class="footer-brand"><a class="brand" href="index.html"><span class="brand-mark">T</span><span>ToolzEasy</span></a><p>Free browser-based tools for PDF, images, text and daily work.</p></div>
         <div class="footer-links">
-          <div><strong>PDF Tools</strong><a href="tool.html?tool=pdf-merge">PDF Merge</a><a href="tool.html?tool=pdf-split">PDF Split</a><a href="tool.html?tool=pdf-compress">PDF Compress</a><a href="tool.html?tool=pdf-signature">PDF Signature</a></div>
+          <div><strong>PDF Tools</strong><a href="tool.html?tool=pdf-split">PDF Split</a><a href="tool.html?tool=pdf-merge">PDF Merge</a><a href="tool.html?tool=pdf-to-jpg">PDF to JPG</a><a href="tool.html?tool=pdf-signature">PDF Signature</a></div>
           <div><strong>Image Tools</strong><a href="tool.html?tool=blur-or-pixelate-area">Blur or Pixelate Area</a><a href="tool.html?tool=image-resize">Image Resize</a><a href="tool.html?tool=image-crop">Image Crop</a><a href="tool.html?tool=image-convert">Image Convert</a></div>
           <div><strong>Site</strong><a href="index.html">Home</a><a href="about.html">About</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
         </div>
       </div>
       <div class="footer-bottom"><span>© 2026 ToolzEasy. All rights reserved.</span><span>Built for speed. Runs in your browser.</span></div>
     </footer>
+    <script>
+      document.querySelector("#contactForm").addEventListener("submit", (event) => {
+        event.preventDefault();
+        const type = document.querySelector("#contactType").value;
+        const message = document.querySelector("#contactMessage").value.trim();
+        const email = document.querySelector("#contactEmail").value.trim();
+        const subject = encodeURIComponent(`ToolzEasy ${type}`);
+        const body = encodeURIComponent(`Message type: ${type}\nReply email: ${email}\n\nProblem/request:\n${message}`);
+        location.href = `mailto:supporttoolz@gmail.com?subject=${subject}&body=${body}`;
+      });
+    </script>
   </body>
 </html>
