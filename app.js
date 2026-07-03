@@ -55,6 +55,57 @@ const routeAliases = {
   "sign-pdf": "pdf-signature"
 };
 
+const seoOverrides = {
+  "pdf-merge": {
+    title: "Merge PDF Online Free - ToolzEasy PDF Merger",
+    description: "Merge multiple PDF files online for free with ToolzEasy. Combine PDFs in your browser with no login, no signup and no stored uploads.",
+    intro: "Use ToolzEasy PDF Merge to combine several PDF documents into one clean file. Add your PDFs, arrange your list, merge them in your browser and download the finished document.",
+    benefits: ["Combine reports, forms, invoices and scanned PDFs into one document.", "Works directly in your browser, so your files are not saved on ToolzEasy servers.", "No account, email or signup is needed to merge PDFs."],
+    steps: ["Click Add PDF files and choose two or more PDFs.", "Remove any file you do not want in the final document.", "Click PDF Merge and download the combined PDF."],
+    faqs: [
+      ["Is this PDF merger free?", "Yes. You can merge PDF files online for free without creating an account."],
+      ["Are my PDF files uploaded to a server?", "The tool is designed to process files in your browser. ToolzEasy does not store your uploaded files."],
+      ["Can I merge more than two PDFs?", "Yes. Add multiple PDF files and combine them into one download."]
+    ]
+  },
+  "invoice-generator": {
+    title: "Free Invoice Generator Online - Download Invoice",
+    description: "Create a professional invoice online for free with ToolzEasy. Add client details, line items, totals and download your invoice instantly.",
+    intro: "ToolzEasy Invoice Generator helps freelancers, small businesses and creators make a simple invoice quickly. Add your business details, client details and items, then download the invoice.",
+    benefits: ["Create invoices without installing software.", "Add multiple invoice items with quantity, price and totals.", "Download the finished invoice and send it to your client."],
+    steps: ["Enter your business and client details.", "Add invoice items, prices and quantities.", "Review the total and download the invoice."],
+    faqs: [
+      ["Can I download the invoice?", "Yes. After filling the invoice form, use the download option to save the invoice."],
+      ["Is the invoice generator free?", "Yes. The ToolzEasy invoice maker is free to use."],
+      ["Who can use this invoice tool?", "It is useful for freelancers, small businesses, students, creators and anyone who needs a quick invoice."]
+    ]
+  },
+  "qr-code-generator": {
+    title: "Free QR Code Generator Online - Download QR Code",
+    description: "Generate a QR code online for free. Enter text or a URL, create your QR code and download it instantly with ToolzEasy.",
+    intro: "Create QR codes for links, contact details, menus, posters and business pages. Enter your text or URL and download the generated QR code.",
+    benefits: ["Create QR codes for websites, forms, menus and social profiles.", "Download the QR code for printing or sharing.", "No login or signup needed."],
+    steps: ["Enter the URL or text you want to encode.", "Click Generate QR Code.", "Download the QR image and use it where needed."],
+    faqs: [
+      ["Can I download my QR code?", "Yes. Generate the QR code and use the download button."],
+      ["What can I put in a QR code?", "You can use a website link, plain text, contact details, menu link or form link."],
+      ["Is this QR code generator free?", "Yes. It is free to use."]
+    ]
+  },
+  "image-resize": {
+    title: "Resize Image Online Free - ToolzEasy Image Resizer",
+    description: "Resize images online for free. Change image width and height in your browser and download the resized image instantly.",
+    intro: "Resize photos, graphics and screenshots for websites, social media or documents. Choose the new width and height, then download your resized image.",
+    benefits: ["Resize images without installing editing software.", "Useful for profile pictures, website images and social posts.", "Runs in your browser for quick private editing."],
+    steps: ["Upload an image.", "Enter the new width and height.", "Process and download the resized image."],
+    faqs: [
+      ["Can I resize images for free?", "Yes. The image resize tool is free to use."],
+      ["Does it work with JPG and PNG?", "Yes. You can upload common image formats supported by your browser."],
+      ["Are my images stored?", "No. The tool is designed for browser-based processing."]
+    ]
+  }
+};
+
 function toolHref(tool) {
   if (location.protocol === "file:") return `${tool.id}.html`;
   return `/${tool.id}`;
@@ -146,7 +197,9 @@ window.toggleMobileMenu = toggleMobileMenu;
 function renderToolPage() {
   const id = resolveToolIdFromUrl();
   const tool = tools.find((item) => item.id === id) || tools[0];
-  document.title = `${tool.name} - ToolzEasy`;
+  const seo = getToolSeo(tool);
+  document.title = seo.title;
+  updatePageMeta(tool, seo);
   toolPage.innerHTML = `
     <section class="page-hero tool-page-hero">
       <div class="tool-title-inner">
@@ -164,9 +217,136 @@ function renderToolPage() {
         <div class="tool-body">${toolMarkup(tool)}</div>
       </div>
     </section>
+    ${toolSeoMarkup(tool, seo)}
   `;
   bindTool(tool, toolPage);
   refreshIcons();
+}
+
+function getToolSeo(tool) {
+  const lower = tool.name.toLowerCase();
+  const fallback = {
+    title: `${tool.name} Online Free - ToolzEasy`,
+    description: `Use the free ${lower} tool from ToolzEasy. Fast browser-based ${tool.category.toLowerCase()} tool with no login and no signup required.`,
+    intro: `The ToolzEasy ${tool.name} tool helps you finish common ${tool.category.toLowerCase()} tasks quickly in your browser. It is built for simple upload, process and download workflows.`,
+    benefits: [
+      `Useful for everyday ${tool.category.toLowerCase()} work.`,
+      "No account or signup is required.",
+      "Designed to be quick, simple and easy to use on desktop or mobile."
+    ],
+    steps: [
+      `Open the ${tool.name} tool.`,
+      "Add your file or enter the details needed by the tool.",
+      "Process the result and download or copy the output."
+    ],
+    faqs: [
+      [`Is ${tool.name} free?`, `Yes. The ToolzEasy ${tool.name} tool is free to use.`],
+      ["Do I need to create an account?", "No. You can use the tool without login or signup."],
+      ["Does this work on mobile?", "Yes. ToolzEasy is designed to work on modern mobile and desktop browsers."]
+    ]
+  };
+  return { ...fallback, ...(seoOverrides[tool.id] || {}) };
+}
+
+function updatePageMeta(tool, seo) {
+  setMeta("description", seo.description);
+  setLink("canonical", `${location.origin}/${tool.id}`);
+  setMeta("og:title", seo.title, "property");
+  setMeta("og:description", seo.description, "property");
+  setMeta("og:url", `${location.origin}/${tool.id}`, "property");
+  setMeta("twitter:title", seo.title);
+  setMeta("twitter:description", seo.description);
+  const json = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "SoftwareApplication",
+        name: tool.name,
+        applicationCategory: `${tool.category}Application`,
+        operatingSystem: "Web",
+        url: `${location.origin}/${tool.id}`,
+        description: seo.description,
+        offers: { "@type": "Offer", price: "0", priceCurrency: "USD" }
+      },
+      {
+        "@type": "FAQPage",
+        mainEntity: seo.faqs.map(([question, answer]) => ({
+          "@type": "Question",
+          name: question,
+          acceptedAnswer: { "@type": "Answer", text: answer }
+        }))
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: location.origin },
+          { "@type": "ListItem", position: 2, name: tool.name, item: `${location.origin}/${tool.id}` }
+        ]
+      }
+    ]
+  };
+  let script = document.querySelector("#toolStructuredData");
+  if (!script) {
+    script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.id = "toolStructuredData";
+    document.head.appendChild(script);
+  }
+  script.textContent = JSON.stringify(json);
+}
+
+function setMeta(name, content, attr = "name") {
+  let node = document.querySelector(`meta[${attr}="${name}"]`);
+  if (!node) {
+    node = document.createElement("meta");
+    node.setAttribute(attr, name);
+    document.head.appendChild(node);
+  }
+  node.setAttribute("content", content);
+}
+
+function setLink(rel, href) {
+  let node = document.querySelector(`link[rel="${rel}"]`);
+  if (!node) {
+    node = document.createElement("link");
+    node.setAttribute("rel", rel);
+    document.head.appendChild(node);
+  }
+  node.setAttribute("href", href);
+}
+
+function toolSeoMarkup(tool, seo) {
+  const related = tools.filter((item) => item.category === tool.category && item.id !== tool.id).slice(0, 4);
+  return `
+    <section class="seo-content">
+      <div class="seo-grid">
+        <article class="seo-panel seo-main">
+          <p class="eyebrow">About this tool</p>
+          <h2>${escapeHtml(seo.title.replace(" - ToolzEasy", ""))}</h2>
+          <p>${escapeHtml(seo.intro)}</p>
+          <h3>How to use ${escapeHtml(tool.name)}</h3>
+          <ol>${seo.steps.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}</ol>
+        </article>
+        <aside class="seo-panel">
+          <h3>Why use it?</h3>
+          <ul>${seo.benefits.map((benefit) => `<li>${escapeHtml(benefit)}</li>`).join("")}</ul>
+          <h3>Related tools</h3>
+          <div class="related-links">${related.map((item) => `<a href="${toolHref(item)}">${escapeHtml(item.name)}</a>`).join("")}</div>
+        </aside>
+      </div>
+      <div class="seo-panel faq-panel">
+        <p class="eyebrow">Questions</p>
+        <h2>${escapeHtml(tool.name)} FAQ</h2>
+        <div class="faq-list">
+          ${seo.faqs.map(([question, answer]) => `<details><summary>${escapeHtml(question)}</summary><p>${escapeHtml(answer)}</p></details>`).join("")}
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[char]));
 }
 
 function categoryColor(category) {
