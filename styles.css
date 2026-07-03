@@ -1435,6 +1435,13 @@ textarea {
   border-color: var(--blue);
 }
 
+.merge-file-list {
+  display: grid;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
 /* Merge file list items */
 .merge-file-row {
   display: flex;

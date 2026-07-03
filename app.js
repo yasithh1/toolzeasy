@@ -1,6 +1,6 @@
 const tools = [
+  ["PDF Merge", "PDF", "file-plus-2", "Add multiple PDFs and combine them into one file."],
   ["PDF Split", "PDF", "scissors", "Extract selected pages from a PDF file."],
-  ["PDF Compress", "PDF", "archive", "Optimize a PDF and download a new copy."],
   ["PDF to Word", "PDF", "file-text", "Export readable PDF text as a Word document."],
   ["PDF to JPG", "PDF", "image", "Export PDF pages as JPG images."],
   ["PDF Rotate", "PDF", "rotate-cw", "Rotate all pages 90 degrees."],
@@ -47,8 +47,9 @@ const tools = [
 }));
 
 const routeAliases = {
+  "merge-pdf": "pdf-merge",
+  "merger-pdf": "pdf-merge",
   "split-pdf": "pdf-split",
-  "compress-pdf": "pdf-compress",
   "rotate-pdf": "pdf-rotate",
   "protect-pdf": "pdf-protect",
   "sign-pdf": "pdf-signature"
@@ -198,7 +199,14 @@ function toolMarkup(tool) {
 
 function pdfToolMarkup(tool) {
   const accepts = tool.name === "JPG to PDF" ? "image/jpeg,image/png" : tool.name === "Word to PDF" ? ".txt,.doc,.docx" : ".pdf";
-  const multiple = tool.name === "JPG to PDF" ? "multiple" : "";
+  const multiple = ["PDF Merge", "JPG to PDF"].includes(tool.name) ? "multiple" : "";
+  const mergeControls = tool.name === "PDF Merge" ? `
+    <label class="merge-add-label">
+      <span>+ Add PDF files</span>
+      <input id="pdfInput" type="file" multiple accept=".pdf" hidden>
+    </label>
+    <div class="merge-file-list" id="mergeFileList">No PDFs added yet.</div>
+  ` : "";
   const pageControls = tool.name === "PDF Split" ? `<input class="control" id="pdfPages" placeholder="Pages, example: 1-3,5">` : "";
   const passwordControl = tool.name === "PDF Protect" ? `<input class="control" id="pdfPassword" type="password" placeholder="Password">` : "";
   const signatureControl = tool.name === "PDF Signature" ? `
@@ -218,7 +226,7 @@ function pdfToolMarkup(tool) {
     <div class="tool-layout">
       <div class="panel controls">
         <h3>Upload</h3>
-        <input class="control" id="pdfInput" type="file" ${multiple} accept="${accepts}">
+        ${mergeControls || `<input class="control" id="pdfInput" type="file" ${multiple} accept="${accepts}">`}
         ${pageControls}
         ${passwordControl}
         ${signatureControl}
@@ -412,6 +420,7 @@ function bindTool(tool, root) {
   bindUtility(root, result);
   if (tool.name === "Blur or Pixelate Area") bindAreaSelection(root);
   if (tool.name === "PDF Signature") bindSignaturePad(root);
+  if (tool.name === "PDF Merge") bindPdfMergeTool(root);
   if (tool.name === "Image Crop") bindCropTool(root);
   if (tool.name === "Image Watermark") bindWatermarkTool(root);
   if (tool.name === "Text to Word") bindTextFileUpload(root);
@@ -425,6 +434,39 @@ function bindTextFileUpload(root) {
     const textarea = root.querySelector("#textInput");
     if (textarea) textarea.value = await file.text();
   });
+}
+
+function bindPdfMergeTool(root) {
+  root._mergeFiles = [];
+  const input = root.querySelector("#pdfInput");
+  const list = root.querySelector("#mergeFileList");
+  const render = () => {
+    if (!list) return;
+    if (!root._mergeFiles.length) {
+      list.textContent = "No PDFs added yet.";
+      return;
+    }
+    list.innerHTML = root._mergeFiles.map((file, index) => `
+      <div class="merge-file-row">
+        <span class="merge-file-name">${escapeHtml(file.name)}</span>
+        <span class="merge-file-size">${formatBytes(file.size)}</span>
+        <button class="merge-file-remove" type="button" data-remove-merge="${index}" aria-label="Remove ${escapeHtml(file.name)}">x</button>
+      </div>
+    `).join("");
+  };
+  input?.addEventListener("change", () => {
+    const selected = [...(input.files || [])].filter((file) => /\.pdf$/i.test(file.name));
+    root._mergeFiles = [...root._mergeFiles, ...selected];
+    input.value = "";
+    render();
+  });
+  list?.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-remove-merge]");
+    if (!button) return;
+    root._mergeFiles.splice(Number(button.dataset.removeMerge), 1);
+    render();
+  });
+  render();
 }
 
 function enhanceToolForm(root) {
@@ -487,14 +529,14 @@ function labelForControl(control) {
 
 async function runPdfTool(tool, root, result) {
   const input = root.querySelector("#pdfInput");
-  const files = [...(input?.files || [])];
+  const files = tool.name === "PDF Merge" ? (root._mergeFiles || []) : [...(input?.files || [])];
   const download = root.querySelector("#pdfDownload");
   hideLink(download);
   if (!files.length) return setResult(result, "Choose a file first.");
   try {
     setResult(result, "Processing...");
+    if (tool.name === "PDF Merge") return pdfMerge(files, result, download);
     if (tool.name === "PDF Split") return pdfSplit(files[0], root, result, download);
-    if (tool.name === "PDF Compress") return pdfCompress(files[0], result, download);
     if (tool.name === "PDF to Word") return pdfToWord(files[0], result, download);
     if (tool.name === "PDF to JPG") return pdfToJpg(files[0], result, download);
     if (tool.name === "PDF Rotate") return pdfRotate(files[0], result, download);
@@ -512,6 +554,19 @@ function requirePdfLib() {
   return window.PDFLib;
 }
 
+async function pdfMerge(files, result, download) {
+  if (files.length < 2) return setResult(result, "Add at least two PDF files to merge.");
+  const { PDFDocument } = requirePdfLib();
+  const merged = await PDFDocument.create();
+  for (const file of files) {
+    const source = await PDFDocument.load(await file.arrayBuffer(), { ignoreEncryption: true });
+    const copied = await merged.copyPages(source, source.getPageIndices());
+    copied.forEach((page) => merged.addPage(page));
+  }
+  setDownload(download, await merged.save({ useObjectStreams: true }), "toolzeasy-merged.pdf", "application/pdf");
+  setResult(result, `Merged ${files.length} PDF files into one document.`);
+}
+
 async function pdfSplit(file, root, result, download) {
   const { PDFDocument } = requirePdfLib();
   const source = await PDFDocument.load(await file.arrayBuffer(), { ignoreEncryption: true });
@@ -521,15 +576,6 @@ async function pdfSplit(file, root, result, download) {
   copied.forEach((page) => output.addPage(page));
   setDownload(download, await output.save({ useObjectStreams: true }), "toolzeasy-split.pdf", "application/pdf");
   setResult(result, `Created a PDF with ${pages.length} page${pages.length === 1 ? "" : "s"}.`);
-}
-
-async function pdfCompress(file, result, download) {
-  const { PDFDocument } = requirePdfLib();
-  const original = await file.arrayBuffer();
-  const pdf = await PDFDocument.load(original, { ignoreEncryption: true });
-  const bytes = await pdf.save({ useObjectStreams: true });
-  setDownload(download, bytes, "toolzeasy-compressed.pdf", "application/pdf");
-  setResult(result, `Saved optimized copy. Before: ${formatBytes(original.byteLength)}. After: ${formatBytes(bytes.byteLength)}.`);
 }
 
 async function pdfToWord(file, result, download) {
