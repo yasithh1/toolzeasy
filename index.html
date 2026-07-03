@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ToolzEasy - Free PDF, Image & Utility Tools Online</title>
+  <meta name="description" content="Free browser-based tools for PDF, images, text and more. No login, no signup. Merge PDFs, resize images, generate QR codes and more instantly.">
+  <meta name="keywords" content="free online tools, pdf merge, image resize, qr code generator, word counter, password generator, unit converter, invoice generator">
+  <meta name="author" content="ToolzEasy">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://toolzeasy.com/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://toolzeasy.com/">
+  <meta property="og:title" content="ToolzEasy - Free PDF, Image & Utility Tools Online">
+  <meta property="og:description" content="Free browser-based tools. No login, no signup. Process files instantly in your browser.">
+  <meta property="og:site_name" content="ToolzEasy">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ToolzEasy - Free Online Tools">
+  <meta name="twitter:description" content="Free tools for PDF, images, text and utilities. No login needed.">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebSite","name":"ToolzEasy","url":"https://toolzeasy.com","description":"Free browser-based tools for PDF, images, text and utilities","potentialAction":{"@type":"SearchAction","target":"https://toolzeasy.com/?q={search_term_string}","query-input":"required name=search_term_string"}}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="ToolzEasy home">
+      <span class="brand-mark">T</span>
+      <span>ToolzEasy</span>
+    </a>
+    <nav class="nav-links nav-menu" aria-label="Primary navigation">
+      <div class="nav-group">
+        <a href="#tools">PDF</a>
+        <div class="nav-dropdown">
+          <a href="tool.html?tool=pdf-merge">PDF Merge</a>
+          <a href="tool.html?tool=pdf-split">PDF Split</a>
+          <a href="tool.html?tool=pdf-compress">PDF Compress</a>
+          <a href="tool.html?tool=pdf-signature">PDF Signature</a>
+          <a href="tool.html?tool=pdf-protect">PDF Protect</a>
+        </div>
+      </div>
+      <div class="nav-group">
+        <a href="#tools">Image</a>
+        <div class="nav-dropdown">
+          <a href="tool.html?tool=image-resize">Image Resize</a>
+          <a href="tool.html?tool=image-crop">Image Crop</a>
+          <a href="tool.html?tool=blur-or-pixelate-area">Blur or Pixelate</a>
+          <a href="tool.html?tool=round-corners">Round Corners</a>
+          <a href="tool.html?tool=image-watermark">Image Watermark</a>
+        </div>
+      </div>
+      <div class="nav-group">
+        <a href="#tools">Text</a>
+        <div class="nav-dropdown">
+          <a href="tool.html?tool=word-counter">Word Counter</a>
+          <a href="tool.html?tool=character-counter">Character Counter</a>
+          <a href="tool.html?tool=case-converter">Case Converter</a>
+          <a href="tool.html?tool=remove-line-spaces">Remove Line Spaces</a>
+          <a href="tool.html?tool=text-to-word">Text to Word</a>
+        </div>
+      </div>
+      <div class="nav-group">
+        <a href="#tools">Utility</a>
+        <div class="nav-dropdown">
+          <a href="tool.html?tool=qr-code-generator">QR Code Generator</a>
+          <a href="tool.html?tool=password-generator">Password Generator</a>
+          <a href="tool.html?tool=invoice-generator">Invoice Generator</a>
+          <a href="tool.html?tool=bmi-calculator">BMI Calculator</a>
+          <a href="tool.html?tool=unit-converter">Unit Converter</a>
+        </div>
+      </div>
+      <a href="about.html">About</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <button class="mobile-menu-btn" aria-label="Open menu" onclick="toggleMobileMenu()">Menu</button>
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#tools" onclick="toggleMobileMenu()">All tools</a>
+      <a href="about.html" onclick="toggleMobileMenu()">About</a>
+      <a href="privacy.html" onclick="toggleMobileMenu()">Privacy</a>
+      <a href="contact.html" onclick="toggleMobileMenu()">Contact</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">Free browser tools</p>
+        <h1>ToolzEasy</h1>
+        <p class="hero-text">Merge PDFs, resize images, generate QR codes, create invoices and more. All free, no login, no file uploads to any server.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#tools">Explore all tools</a>
+          <a class="button secondary" href="#privacy">How it works</a>
+        </div>
+        <div class="hero-trust">
+          <span>No login</span>
+          <span>No file uploads</span>
+          <span>Works offline</span>
+          <span>100% free</span>
+        </div>
+      </div>
+      <div class="hero-panel" aria-label="Popular tools preview">
+        <div class="preview-top">
+          <span class="pulse"></span>
+          <span>Popular right now</span>
+        </div>
+        <div class="preview-grid">
+          <span><strong>PDF Merge</strong><small>Combine files</small></span>
+          <span><strong>Image Resize</strong><small>Set exact sizes</small></span>
+          <span><strong>QR Code</strong><small>Create codes</small></span>
+          <span><strong>Word Counter</strong><small>Check text fast</small></span>
+          <span><strong>Invoice</strong><small>Make simple bills</small></span>
+          <span><strong>PDF Signature</strong><small>Draw and place</small></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="trust-strip" aria-label="Tool benefits">
+      <div>
+        <strong>Useful tools</strong>
+        <span>PDF, image, text and utility</span>
+      </div>
+      <div>
+        <strong>Zero uploads</strong>
+        <span>Most tools run in your browser</span>
+      </div>
+      <div>
+        <strong>No account</strong>
+        <span>Use every tool immediately</span>
+      </div>
+    </section>
+
+    <section class="tools-section" id="tools">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Choose a tool</p>
+          <h2>Tools for everyday work</h2>
+        </div>
+        <label class="search-wrap">
+          <span class="sr-only">Search tools</span>
+          <input id="toolSearch" type="search" placeholder="Search tools...">
+        </label>
+      </div>
+
+      <div class="filters" role="tablist" aria-label="Tool categories">
+        <button class="filter active" type="button" data-filter="all">All <span class="filter-count" id="countAll"></span></button>
+        <button class="filter" type="button" data-filter="PDF">PDF <span class="filter-count" id="countPDF"></span></button>
+        <button class="filter" type="button" data-filter="Image">Image <span class="filter-count" id="countImage"></span></button>
+        <button class="filter" type="button" data-filter="Text">Text <span class="filter-count" id="countText"></span></button>
+        <button class="filter" type="button" data-filter="Utility">Utility <span class="filter-count" id="countUtility"></span></button>
+      </div>
+
+      <div class="tool-grid" id="toolGrid"></div>
+      <p class="no-results" id="noResults" style="display:none;">No tools match your search. Try a different keyword.</p>
+    </section>
+
+    <section class="info-band" id="privacy">
+      <div>
+        <p class="eyebrow">Privacy first</p>
+        <h2>Your files stay on your device</h2>
+      </div>
+      <p>Almost every tool on ToolzEasy processes files directly inside your browser. No files are sent to any server. There's no account system, no file history, and no saved uploads. Just open a tool, get your result, and close the tab.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a class="brand" href="#top"><span class="brand-mark">T</span><span>ToolzEasy</span></a>
+        <p>Free browser-based tools for PDF, images, text and daily work.</p>
+      </div>
+      <div class="footer-links">
+        <div>
+          <strong>PDF Tools</strong>
+          <a href="tool.html?tool=pdf-merge">PDF Merge</a>
+          <a href="tool.html?tool=pdf-split">PDF Split</a>
+          <a href="tool.html?tool=pdf-compress">PDF Compress</a>
+          <a href="tool.html?tool=pdf-signature">PDF Signature</a>
+        </div>
+        <div>
+          <strong>Image Tools</strong>
+          <a href="tool.html?tool=blur-or-pixelate-area">Blur or Pixelate Area</a>
+          <a href="tool.html?tool=image-resize">Image Resize</a>
+          <a href="tool.html?tool=image-crop">Image Crop</a>
+          <a href="tool.html?tool=image-convert">Image Convert</a>
+        </div>
+        <div>
+          <strong>Utility Tools</strong>
+          <a href="tool.html?tool=invoice-generator">Invoice Generator</a>
+          <a href="tool.html?tool=qr-code-generator">QR Code Generator</a>
+          <a href="tool.html?tool=password-generator">Password Generator</a>
+          <a href="tool.html?tool=unit-converter">Unit Converter</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 ToolzEasy. All rights reserved.</span>
+      <span>Built for speed. Runs in your browser.</span>
+    </div>
+  </footer>
+
+  <div class="modal" id="toolModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close></div>
+    <section class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="icon-button" type="button" data-close aria-label="Close tool">x</button>
+      <div id="modalBody"></div>
+    </section>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" defer></script>
+  <script src="app.js" defer></script>
+</body>
+</html>
