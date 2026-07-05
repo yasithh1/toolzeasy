@@ -35,6 +35,7 @@ const tools = [
   ["URL Encoder/Decoder", "Utility", "link", "Encode or decode URL text."],
   ["Base64 Encoder/Decoder", "Utility", "binary", "Encode or decode Base64 text."],
   ["Random Number Generator", "Utility", "dice-5", "Generate a random number in a range."],
+  ["Spin Wheel Picker", "Utility", "circle-dot", "Add names or choices and spin a wheel to pick one."],
   ["UUID Generator", "Utility", "fingerprint", "Create random UUID values."],
   ["Stopwatch", "Utility", "timer", "Start, stop and reset a stopwatch."],
   ["Countdown Timer", "Utility", "alarm-clock", "Run a simple countdown timer."]
@@ -90,6 +91,18 @@ const seoOverrides = {
       ["Can I download my QR code?", "Yes. Generate the QR code and use the download button."],
       ["What can I put in a QR code?", "You can use a website link, plain text, contact details, menu link or form link."],
       ["Is this QR code generator free?", "Yes. It is free to use."]
+    ]
+  },
+  "spin-wheel-picker": {
+    title: "Spin Wheel Picker Online - Random Name Picker",
+    description: "Add names, choices or tasks and spin a colorful wheel online. ToolzEasy randomly picks one item and stops automatically.",
+    intro: "Use the ToolzEasy Spin Wheel Picker for names, teams, prizes, chores, classroom picks or any random choice. Add one item per line, spin the wheel and let it stop on a winner.",
+    benefits: ["Great for giveaways, classroom choices, team picks and simple decisions.", "Add people, tasks, foods, places or custom choices.", "The wheel spins with animation and stops automatically."],
+    steps: ["Enter one name or choice per line.", "Click Spin wheel.", "Wait for the wheel to stop and show the selected winner."],
+    faqs: [
+      ["Can I add my own names?", "Yes. Type one person or item per line and spin the wheel."],
+      ["Does the wheel stop by itself?", "Yes. The wheel slows down and stops automatically on a random choice."],
+      ["Is the spin wheel free?", "Yes. The ToolzEasy spin wheel picker is free to use."]
     ]
   },
   "image-resize": {
@@ -580,6 +593,26 @@ function utilityToolMarkup(tool) {
     "URL Encoder/Decoder": encoderMarkup("urlText", "data-url-encode", "data-url-decode"),
     "Base64 Encoder/Decoder": encoderMarkup("baseText", "data-base-encode", "data-base-decode"),
     "Random Number Generator": `<div class="tool-layout"><div class="panel controls"><input class="control" id="randMin" type="number" value="1"><input class="control" id="randMax" type="number" value="100"><button class="button primary action-button" data-random type="button">Generate</button></div><div class="panel"><div class="result" data-result></div></div></div>`,
+    "Spin Wheel Picker": `
+      <div class="tool-layout spin-tool">
+        <div class="panel controls">
+          <h3>Wheel items</h3>
+          <textarea id="wheelItems" placeholder="One item per line&#10;Alex&#10;Maya&#10;Jordan&#10;Sam">Alex
+Maya
+Jordan
+Sam
+Riley</textarea>
+          <button class="button primary action-button" data-spin-wheel type="button">Spin wheel</button>
+          <button class="button secondary action-button" data-wheel-sample type="button">Reset sample</button>
+        </div>
+        <div class="panel spin-panel">
+          <div class="wheel-stage">
+            <div class="wheel-pointer"></div>
+            <canvas id="spinWheel" width="420" height="420"></canvas>
+          </div>
+          <div class="result spin-result" data-result>Add items, then spin the wheel.</div>
+        </div>
+      </div>`,
     "UUID Generator": `<div class="tool-layout"><div class="panel controls"><input class="control" id="uuidCount" type="number" min="1" max="50" value="5"><button class="button primary action-button" data-uuid type="button">Generate UUIDs</button><a class="button secondary action-button" id="uuidDownload" hidden>Download</a></div><div class="panel"><div class="result" data-result></div></div></div>`,
     "Stopwatch": `<div class="tool-layout"><div class="panel controls"><button class="button primary action-button" data-stopwatch-start type="button">Start</button><button class="button secondary action-button" data-stopwatch-stop type="button">Stop</button><button class="button secondary action-button" data-stopwatch-reset type="button">Reset</button></div><div class="panel"><div class="result" data-result><strong id="stopwatchTime">00:00.0</strong></div></div></div>`,
     "Countdown Timer": `<div class="tool-layout"><div class="panel controls"><input class="control" id="countSeconds" type="number" min="1" value="60"><button class="button primary action-button" data-countdown-start type="button">Start countdown</button><button class="button secondary action-button" data-countdown-stop type="button">Stop</button></div><div class="panel"><div class="result" data-result><strong id="countdownTime">60s</strong></div></div></div>`
@@ -701,6 +734,7 @@ function labelForControl(control) {
     baseText: "Base64 text",
     randMin: "Minimum",
     randMax: "Maximum",
+    wheelItems: "Wheel items",
     uuidCount: "How many",
     countSeconds: "Seconds"
   };
@@ -1204,8 +1238,9 @@ function setupShapeCanvas(root, img) {
   const base = document.createElement("canvas");
   base.width = img.width;
   base.height = img.height;
-  base.style.maxWidth = "100%";
   base.style.display = "block";
+  base.style.width = "100%";
+  base.style.height = "auto";
   const bctx = base.getContext("2d");
   bctx.drawImage(img, 0, 0);
 
@@ -1222,7 +1257,7 @@ function setupShapeCanvas(root, img) {
   overlay.style.pointerEvents = "auto";
 
   const wrap = document.createElement("div");
-  wrap.style.cssText = "position:relative;display:inline-block;max-width:100%;width:100%;";
+  wrap.style.cssText = "position:relative;display:block;max-width:100%;width:min(100%, " + img.naturalWidth + "px);margin:0 auto;";
   wrap.appendChild(base);
   wrap.appendChild(overlay);
 
@@ -1798,6 +1833,7 @@ function bindUtility(root, result) {
     const max = Number(root.querySelector("#randMax").value);
     result.textContent = String(Math.floor(Math.random() * (max - min + 1)) + min);
   });
+  bindSpinWheel(root, result);
   root.querySelector("[data-uuid]")?.addEventListener("click", () => {
     const count = Math.min(50, Math.max(1, Number(root.querySelector("#uuidCount").value)));
     const uuids = Array.from({ length: count }, () => crypto.randomUUID()).join("\n");
@@ -1809,6 +1845,122 @@ function bindUtility(root, result) {
   root.querySelector("[data-stopwatch-reset]")?.addEventListener("click", () => resetStopwatch(root));
   root.querySelector("[data-countdown-start]")?.addEventListener("click", () => startCountdown(root));
   root.querySelector("[data-countdown-stop]")?.addEventListener("click", stopCountdown);
+}
+
+function bindSpinWheel(root, result) {
+  const canvas = root.querySelector("#spinWheel");
+  const textarea = root.querySelector("#wheelItems");
+  const spinButton = root.querySelector("[data-spin-wheel]");
+  if (!canvas || !textarea || !spinButton) return;
+  const ctx = canvas.getContext("2d");
+  const palette = ["#1463ff", "#20c997", "#ffb703", "#f72585", "#7c3aed", "#14b8a6", "#fb7185", "#38bdf8"];
+  let rotation = 0;
+  let spinning = false;
+
+  const getItems = () => textarea.value.split(/\r?\n/).map((item) => item.trim()).filter(Boolean).slice(0, 60);
+  const draw = (items = getItems()) => {
+    const size = canvas.width;
+    const center = size / 2;
+    const radius = center - 14;
+    ctx.clearRect(0, 0, size, size);
+    ctx.save();
+    ctx.translate(center, center);
+    ctx.rotate(rotation);
+    if (!items.length) {
+      ctx.fillStyle = "#eef6ff";
+      ctx.beginPath();
+      ctx.arc(0, 0, radius, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = "#64748b";
+      ctx.font = "bold 18px Inter, Arial";
+      ctx.textAlign = "center";
+      ctx.fillText("Add items", 0, 6);
+      ctx.restore();
+      return;
+    }
+    const slice = (Math.PI * 2) / items.length;
+    items.forEach((item, index) => {
+      const start = index * slice;
+      const end = start + slice;
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.arc(0, 0, radius, start, end);
+      ctx.closePath();
+      ctx.fillStyle = palette[index % palette.length];
+      ctx.fill();
+      ctx.strokeStyle = "rgba(255,255,255,0.9)";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      ctx.save();
+      ctx.rotate(start + slice / 2);
+      ctx.textAlign = "right";
+      ctx.fillStyle = "#ffffff";
+      ctx.font = `bold ${items.length > 18 ? 12 : 15}px Inter, Arial`;
+      ctx.shadowColor = "rgba(0,0,0,0.24)";
+      ctx.shadowBlur = 3;
+      const label = item.length > 18 ? `${item.slice(0, 17)}...` : item;
+      ctx.fillText(label, radius - 16, 5);
+      ctx.restore();
+    });
+    ctx.beginPath();
+    ctx.arc(0, 0, 34, 0, Math.PI * 2);
+    ctx.fillStyle = "#ffffff";
+    ctx.fill();
+    ctx.strokeStyle = "#d8e2f0";
+    ctx.lineWidth = 3;
+    ctx.stroke();
+    ctx.fillStyle = "#1463ff";
+    ctx.font = "bold 14px Inter, Arial";
+    ctx.textAlign = "center";
+    ctx.fillText("SPIN", 0, 5);
+    ctx.restore();
+  };
+
+  const winnerForRotation = (items) => {
+    const normalized = ((rotation % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
+    const pointerAngle = (Math.PI * 1.5 - normalized + Math.PI * 2) % (Math.PI * 2);
+    const index = Math.floor(pointerAngle / ((Math.PI * 2) / items.length)) % items.length;
+    return items[index];
+  };
+
+  const spin = () => {
+    if (spinning) return;
+    const items = getItems();
+    if (items.length < 2) return setResult(result, "Add at least two items to spin.");
+    spinning = true;
+    spinButton.disabled = true;
+    setResult(result, "Spinning...");
+    const start = performance.now();
+    const duration = 4200 + Math.random() * 1400;
+    const startRotation = rotation;
+    const targetRotation = rotation + Math.PI * 2 * (5 + Math.random() * 4) + Math.random() * Math.PI * 2;
+    const easeOut = (t) => 1 - Math.pow(1 - t, 4);
+    const tick = (now) => {
+      const progress = Math.min(1, (now - start) / duration);
+      rotation = startRotation + (targetRotation - startRotation) * easeOut(progress);
+      draw(items);
+      if (progress < 1) {
+        requestAnimationFrame(tick);
+        return;
+      }
+      spinning = false;
+      spinButton.disabled = false;
+      const winner = winnerForRotation(items);
+      result.innerHTML = `<strong>${escapeHtml(winner)}</strong><br><span class="helper-text">Winner selected from ${items.length} items.</span>`;
+    };
+    requestAnimationFrame(tick);
+  };
+
+  textarea.addEventListener("input", () => draw());
+  root.querySelector("[data-wheel-sample]")?.addEventListener("click", () => {
+    textarea.value = "Alex\nMaya\nJordan\nSam\nRiley";
+    rotation = 0;
+    draw();
+    setResult(result, "Sample items restored. Spin when ready.");
+  });
+  spinButton.addEventListener("click", spin);
+  draw();
 }
 
 function bindInvoiceTool(root, result) {

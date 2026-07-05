@@ -42,10 +42,14 @@
         <p>Questions, bug reports and feature requests go directly to ToolzEasy support.</p>
       </section>
       <section class="contact-form-section">
-        <form class="contact-form-card" id="contactForm">
+        <form class="contact-form-card" id="contactForm" action="https://formsubmit.co/supporttoolz@gmail.com" method="POST">
+          <input type="hidden" name="_subject" value="New ToolzEasy support message">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_next" value="https://toolzeasy.com/contact?sent=1">
           <label class="contact-field">
             <span>Message type</span>
-            <select id="contactType" required>
+            <select id="contactType" name="message_type" required>
               <option value="Bug report">Bug report</option>
               <option value="Tool not working">Tool not working</option>
               <option value="Feature request">Feature request</option>
@@ -54,18 +58,18 @@
           </label>
           <label class="contact-field">
             <span>Message</span>
-            <textarea id="contactMessage" rows="7" placeholder="Tell me the tool name, what happened, and what browser/device you used." required></textarea>
+            <textarea id="contactMessage" name="message" rows="7" placeholder="Tell me the tool name, what happened, and what browser/device you used." required></textarea>
           </label>
           <label class="contact-field">
             <span>Email</span>
-            <input id="contactEmail" type="email" placeholder="Your email so I can reply" required>
+            <input id="contactEmail" name="email" type="email" placeholder="Your email so I can reply" required>
           </label>
           <label class="contact-check">
             <input id="contactAgree" type="checkbox" required>
-            <span>I understand this message opens my email app and sends the details to ToolzEasy support.</span>
+            <span>I understand this message will be sent to ToolzEasy support.</span>
           </label>
           <button class="button primary contact-submit" type="submit">Send message</button>
-          <p class="contact-note">Your message is private and is not shown publicly on the website.</p>
+          <p class="contact-note" id="contactStatus">Your message is private and is not shown publicly on the website.</p>
         </form>
       </section>
     </main>
@@ -81,14 +85,12 @@
       <div class="footer-bottom"><span>(c) 2026 ToolzEasy. All rights reserved.</span><span>Built for speed. Runs in your browser.</span></div>
     </footer>
     <script>
-      document.querySelector("#contactForm").addEventListener("submit", (event) => {
-        event.preventDefault();
-        const type = document.querySelector("#contactType").value;
-        const message = document.querySelector("#contactMessage").value.trim();
-        const email = document.querySelector("#contactEmail").value.trim();
-        const subject = encodeURIComponent(`ToolzEasy ${type}`);
-        const body = encodeURIComponent(`Message type: ${type}\nReply email: ${email}\n\nProblem/request:\n${message}`);
-        location.href = `mailto:supporttoolz@gmail.com?subject=${subject}&body=${body}`;
+      const contactStatus = document.querySelector("#contactStatus");
+      if (new URLSearchParams(location.search).get("sent") === "1" && contactStatus) {
+        contactStatus.textContent = "Message sent. Thank you for contacting ToolzEasy.";
+      }
+      document.querySelector("#contactForm")?.addEventListener("submit", () => {
+        if (contactStatus) contactStatus.textContent = "Sending your message...";
       });
     </script>
   </body>
