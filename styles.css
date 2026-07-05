@@ -187,10 +187,10 @@ textarea {
   height: 38px;
   min-height: 38px;
   padding: 0;
-  border: 2px solid #0b1220;
+  border: 2px solid #c8d7ed;
   border-radius: 999px;
-  background: #0b1220;
-  color: #0b1220;
+  background: #eaf3ff;
+  color: #f59e0b;
   cursor: pointer;
   font-size: 0;
   overflow: hidden;
@@ -204,23 +204,32 @@ textarea {
   left: 3px;
   width: 28px;
   height: 28px;
-  border: 2px solid #0b1220;
+  border: 2px solid #f8fafc;
   border-radius: 50%;
   background: #ffffff;
-  transition: transform 0.2s, border-color 0.2s, background 0.2s;
+  box-shadow: 0 4px 12px rgba(16, 32, 51, 0.18);
+  transition: transform 0.2s, border-color 0.2s, background 0.2s, box-shadow 0.2s;
 }
 
 .theme-toggle::after {
   content: "";
   position: absolute;
-  top: 9px;
-  left: 13px;
-  width: 13px;
-  height: 13px;
+  top: 12px;
+  left: 15px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
-  box-shadow: -4px 2px 0 0 #0b1220;
-  transform: rotate(-18deg);
-  transition: transform 0.2s, left 0.2s, box-shadow 0.2s, background 0.2s;
+  background: #f59e0b;
+  box-shadow:
+    0 -7px 0 -4px #f59e0b,
+    0 7px 0 -4px #f59e0b,
+    7px 0 0 -4px #f59e0b,
+    -7px 0 0 -4px #f59e0b,
+    5px 5px 0 -4px #f59e0b,
+    -5px -5px 0 -4px #f59e0b,
+    5px -5px 0 -4px #f59e0b,
+    -5px 5px 0 -4px #f59e0b;
+  transition: transform 0.2s, left 0.2s, top 0.2s, width 0.2s, height 0.2s, box-shadow 0.2s, background 0.2s;
 }
 
 .theme-toggle:hover {
@@ -236,19 +245,17 @@ textarea {
   transform: translateX(34px);
   border-color: #050914;
   background: #ffffff;
+  box-shadow: 0 5px 14px rgba(0, 0, 0, 0.35);
 }
 
 .theme-toggle[aria-pressed="true"]::after {
+  top: 9px;
   left: 47px;
-  width: 12px;
-  height: 12px;
+  width: 13px;
+  height: 13px;
   background: #050914;
-  box-shadow:
-    0 -7px 0 -5px #050914,
-    0 7px 0 -5px #050914,
-    7px 0 0 -5px #050914,
-    -7px 0 0 -5px #050914;
-  transform: rotate(0deg);
+  box-shadow: -4px 2px 0 0 #050914;
+  transform: rotate(-18deg);
 }
 
 .hero {
@@ -1228,13 +1235,18 @@ textarea {
 }
 
 .contact-form-section {
-  width: min(620px, calc(100% - 36px));
-  margin: 18px auto 60px;
+  width: min(680px, calc(100% - 36px));
+  margin: 22px auto 64px;
 }
 
 .contact-form-card {
   display: grid;
-  gap: 12px;
+  gap: 16px;
+  padding: clamp(20px, 4vw, 34px);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-bg);
+  box-shadow: 0 14px 36px rgba(16, 32, 51, 0.08);
 }
 
 .contact-field {
@@ -1249,11 +1261,12 @@ textarea {
 .contact-field textarea {
   width: 100%;
   border: 1px solid var(--line);
-  border-radius: 6px;
-  background: var(--white);
-  padding: 15px 16px;
+  border-radius: 8px;
+  background: var(--surface);
+  padding: 14px 15px;
   color: var(--ink);
   outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
 }
 
 .contact-field textarea {
@@ -1275,17 +1288,19 @@ textarea {
   align-items: start;
   color: #40536d;
   line-height: 1.55;
+  padding: 12px 0 2px;
 }
 
 .contact-check input {
   width: 22px;
   height: 22px;
   margin-top: 2px;
+  accent-color: var(--blue);
 }
 
 .contact-submit {
   width: 100%;
-  margin-top: 14px;
+  margin-top: 8px;
 }
 
 .contact-note {
