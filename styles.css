@@ -1506,12 +1506,12 @@ textarea {
 /* Better footer */
 .footer-inner {
   display: grid;
-  grid-template-columns: 0.8fr 2fr;
-  gap: 48px;
+  grid-template-columns: minmax(190px, 0.7fr) minmax(0, 2.3fr);
+  gap: 40px;
   padding: 48px clamp(18px,4vw,56px) 32px;
 }
 .footer-brand p {
-  color: #8ca0b8;
+  color: #b5c3d6;
   font-size: 0.875rem;
   line-height: 1.6;
   margin-top: 10px;
@@ -1519,12 +1519,12 @@ textarea {
 }
 .footer-links {
   display: grid;
-  grid-template-columns: repeat(3,1fr);
-  gap: 24px;
+  grid-template-columns: repeat(5, minmax(120px, 1fr));
+  gap: 22px;
 }
 .footer-links strong {
   display: block;
-  color: var(--white);
+  color: #f8fafc;
   font-size: 0.78rem;
   font-weight: 800;
   text-transform: uppercase;
@@ -1533,7 +1533,7 @@ textarea {
 }
 .footer-links a {
   display: block;
-  color: #8ca0b8;
+  color: #b5c3d6;
   font-size: 0.85rem;
   margin-bottom: 7px;
   transition: color 0.15s;
@@ -1541,10 +1541,14 @@ textarea {
 .footer-links a:hover { color: #60a5fa; }
 .site-footer {
   background: #0c1929;
-  color: #8ca0b8;
+  color: #b5c3d6;
   flex-direction: column;
   gap: 0;
   padding: 0;
+}
+
+.site-footer .brand {
+  color: #ffffff;
 }
 
 .site-footer > span,
@@ -1555,7 +1559,7 @@ textarea {
 
 .site-footer > span {
   padding-top: 24px;
-  color: var(--white);
+  color: #ffffff;
   font-weight: 800;
 }
 
@@ -1571,7 +1575,7 @@ textarea {
   padding: 18px clamp(18px,4vw,56px);
   border-top: 1px solid rgba(255,255,255,0.07);
   font-size: 0.8rem;
-  color: #4a6480;
+  color: #8ca0b8;
 }
 
 /* Tool card new badge */
