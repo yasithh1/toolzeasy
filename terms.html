@@ -27,7 +27,7 @@
       document.documentElement.dataset.theme = saved || (prefersDark ? "dark" : "light");
     })();
   </script>
-  <link rel="stylesheet" href="styles.css?v=20260705-toggle3">
+  <link rel="stylesheet" href="styles.css?v=20260705-nav4">
     <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z15B1W6MGV"></script>
   <script>
@@ -41,11 +41,70 @@
     <header class="site-header">
       <a class="brand" href="/"><span class="brand-mark">T</span><span>ToolzEasy</span></a>
       <nav class="nav-links nav-menu" aria-label="Primary navigation">
-        <div class="nav-group"><a href="/#tools">PDF</a><div class="nav-dropdown"><a href="/pdf-split">PDF Split</a><a href="/pdf-merge">PDF Merge</a><a href="/pdf-signature">PDF Signature</a></div></div>
-        <div class="nav-group"><a href="/#tools">Image</a><div class="nav-dropdown"><a href="/image-resize">Image Resize</a><a href="/image-crop">Image Crop</a><a href="/blur-or-pixelate-area">Blur or Pixelate</a><a href="/image-watermark">Image Watermark</a></div></div>
-        <div class="nav-group"><a href="/#tools">Utility</a><div class="nav-dropdown"><a href="/qr-code-generator">QR Code Generator</a><a href="/password-generator">Password Generator</a><a href="/invoice-generator">Invoice Generator</a><a href="/spin-wheel-picker">Spin Wheel Picker</a><a href="/unit-converter">Unit Converter</a></div></div>
-        <a href="/about">About</a><a href="/privacy">Privacy</a><a href="/contact">Contact</a>
-      </nav>
+      <div class="nav-group">
+        <a href="/#tools">PDF</a>
+        <div class="nav-dropdown">
+          <a href="/pdf-merge">PDF Merge</a>
+          <a href="/pdf-split">PDF Split</a>
+          <a href="/pdf-to-word">PDF to Word</a>
+          <a href="/pdf-to-jpg">PDF to JPG</a>
+          <a href="/pdf-rotate">PDF Rotate</a>
+          <a href="/pdf-protect">PDF Protect</a>
+          <a href="/word-to-pdf">Word to PDF</a>
+          <a href="/jpg-to-pdf">JPG to PDF</a>
+          <a href="/pdf-signature">PDF Signature</a>
+        </div>
+      </div>
+      <div class="nav-group">
+        <a href="/#tools">Image</a>
+        <div class="nav-dropdown">
+          <a href="/image-resize">Image Resize</a>
+          <a href="/image-convert">Image Convert</a>
+          <a href="/image-crop">Image Crop</a>
+          <a href="/blur-or-pixelate-area">Blur or Pixelate</a>
+          <a href="/round-corners">Round Corners</a>
+          <a href="/image-protect-zip">Protect Image ZIP</a>
+          <a href="/image-watermark">Image Watermark</a>
+          <a href="/image-grayscale">Image Grayscale</a>
+        </div>
+      </div>
+      <div class="nav-group">
+        <a href="/#tools">Text</a>
+        <div class="nav-dropdown">
+          <a href="/word-counter">Word Counter</a>
+          <a href="/character-counter">Character Counter</a>
+          <a href="/case-converter">Case Converter</a>
+          <a href="/remove-line-spaces">Remove Line Spaces</a>
+          <a href="/text-to-word">Text to Word</a>
+          <a href="/slug-generator">Slug Generator</a>
+          <a href="/duplicate-line-remover">Duplicate Line Remover</a>
+          <a href="/line-sorter">Line Sorter</a>
+        </div>
+      </div>
+      <div class="nav-group">
+        <a href="/#tools">Utility</a>
+        <div class="nav-dropdown">
+          <a href="/qr-code-generator">QR Code Generator</a>
+          <a href="/color-picker">Color Picker</a>
+          <a href="/password-generator">Password Generator</a>
+          <a href="/unit-converter">Unit Converter</a>
+          <a href="/invoice-generator">Invoice Generator</a>
+          <a href="/bmi-calculator">BMI Calculator</a>
+          <a href="/age-calculator">Age Calculator</a>
+          <a href="/tip-calculator">Tip Calculator</a>
+          <a href="/url-encoder-decoder">URL Encoder/Decoder</a>
+          <a href="/base64-encoder-decoder">Base64 Encoder/Decoder</a>
+          <a href="/random-number-generator">Random Number Generator</a>
+          <a href="/spin-wheel-picker">Spin Wheel Picker</a>
+          <a href="/uuid-generator">UUID Generator</a>
+          <a href="/stopwatch">Stopwatch</a>
+          <a href="/countdown-timer">Countdown Timer</a>
+        </div>
+      </div>
+      <a href="/about">About</a>
+      <a href="/privacy">Privacy</a>
+      <a href="/contact">Contact</a>
+    </nav>
     <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch color theme" aria-pressed="false"></button>
     </header>
     <main>
@@ -72,6 +131,6 @@
       </div>
       <div class="footer-bottom"><span>(c) 2026 ToolzEasy. All rights reserved.</span><span>Built for speed. Runs in your browser.</span></div>
     </footer>
-    <script src="theme.js?v=20260705-toggle3" defer></script>
+    <script src="theme.js?v=20260705-nav4" defer></script>
   </body>
 </html>
