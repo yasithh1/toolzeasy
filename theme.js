@@ -18,7 +18,8 @@
       const nextTheme = theme === "dark" ? "light" : "dark";
       button.setAttribute("aria-pressed", String(theme === "dark"));
       button.setAttribute("aria-label", `Switch to ${nextTheme} mode`);
-      button.textContent = theme === "dark" ? "Light" : "Dark";
+      button.title = `Switch to ${nextTheme} mode`;
+      button.textContent = "";
     });
   };
 
