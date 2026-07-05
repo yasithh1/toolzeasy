@@ -1,5 +1,6 @@
 /merge-pdf /pdf-merge 301
 /merger-pdf /pdf-merge 301
+/tool / 301
 /split-pdf /pdf-split 301
 /protect-pdf /pdf-protect 301
 /rotate-pdf /pdf-rotate 301

@@ -209,7 +209,23 @@ window.toggleMobileMenu = toggleMobileMenu;
 
 function renderToolPage() {
   const id = resolveToolIdFromUrl();
-  const tool = tools.find((item) => item.id === id) || tools[0];
+  const tool = tools.find((item) => item.id === id);
+  if (!tool) {
+    document.title = "Tool not found - ToolzEasy";
+    toolPage.innerHTML = `
+      <section class="page-hero tool-page-hero">
+        <div class="tool-title-inner">
+          <p class="eyebrow">Tool not found</p>
+          <h1>That tool is not available</h1>
+          <p class="hero-text">Open the ToolzEasy homepage and choose the correct PDF, image, text or utility tool.</p>
+          <div class="hero-actions" style="justify-content:center;">
+            <a class="button primary" href="/#tools">Open all tools</a>
+          </div>
+        </div>
+      </section>
+    `;
+    return;
+  }
   const seo = getToolSeo(tool);
   document.title = seo.title;
   updatePageMeta(tool, seo);
