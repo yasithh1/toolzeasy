@@ -27,7 +27,19 @@
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="manifest" href="/site.webmanifest">
   <meta name="theme-color" content="#2563eb">
-  <link rel="stylesheet" href="styles.css">
+    <script>
+    (() => {
+      let saved = null;
+      try {
+        saved = localStorage.getItem("toolzeasy-theme");
+      } catch (error) {
+        saved = null;
+      }
+      const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+      document.documentElement.dataset.theme = saved || (prefersDark ? "dark" : "light");
+    })();
+  </script>
+  <link rel="stylesheet" href="styles.css?v=20260705-dark">
     <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z15B1W6MGV"></script>
   <script>
@@ -47,6 +59,7 @@
         <div class="nav-group"><a href="/#tools">Utility</a><div class="nav-dropdown"><a href="/qr-code-generator">QR Code Generator</a><a href="/password-generator">Password Generator</a><a href="/invoice-generator">Invoice Generator</a><a href="/bmi-calculator">BMI Calculator</a><a href="/unit-converter">Unit Converter</a></div></div>
         <a href="/about">About</a><a href="/privacy">Privacy</a><a href="/contact">Contact</a>
       </nav>
+    <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch color theme" aria-pressed="false">Dark</button>
     </header>
 
         <main id="toolPage">
@@ -94,6 +107,7 @@
     <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="theme.js?v=20260705-dark" defer></script>
     <script src="app.js?v=20260705-spin"></script>
   </body>
 </html>

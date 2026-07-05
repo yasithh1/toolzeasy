@@ -1,4 +1,5 @@
 :root {
+  color-scheme: light;
   --blue: #1463ff;
   --blue-dark: #0a2f78;
   --ink: #102033;
@@ -9,7 +10,34 @@
   --amber: #fff6df;
   --rose: #fff0f3;
   --white: #ffffff;
+  --page-bg: #f7fbff;
+  --panel-bg: #ffffff;
+  --surface: #fbfdff;
+  --header-bg: rgba(255, 255, 255, 0.9);
+  --hero-text: #344761;
+  --body-text: #40526b;
   --shadow: 0 18px 50px rgba(16, 32, 51, 0.12);
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --blue: #6ea8ff;
+  --blue-dark: #b8d4ff;
+  --ink: #e6edf7;
+  --muted: #9fb0c6;
+  --line: #26364d;
+  --soft: #16263a;
+  --mint: #12342d;
+  --amber: #332912;
+  --rose: #381824;
+  --white: #111b2b;
+  --page-bg: #08111f;
+  --panel-bg: #111b2b;
+  --surface: #0f1a2a;
+  --header-bg: rgba(15, 23, 36, 0.92);
+  --hero-text: #b5c3d6;
+  --body-text: #b9c7d8;
+  --shadow: 0 20px 58px rgba(0, 0, 0, 0.35);
 }
 
 * {
@@ -22,7 +50,7 @@ html {
 
 body {
   margin: 0;
-  background: #f7fbff;
+  background: var(--page-bg);
   color: var(--ink);
   font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
@@ -48,7 +76,7 @@ textarea {
   justify-content: space-between;
   padding: 18px clamp(18px, 4vw, 56px);
   border-bottom: 1px solid rgba(216, 226, 240, 0.82);
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--header-bg);
   backdrop-filter: blur(16px);
 }
 
@@ -148,8 +176,35 @@ textarea {
 }
 
 .nav-dropdown a:hover {
-  background: #f1f6ff;
+  background: var(--soft);
   color: var(--blue);
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  min-width: 72px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--soft);
+  color: var(--blue-dark);
+  cursor: pointer;
+  font-weight: 800;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.theme-toggle:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+}
+
+.theme-toggle[aria-pressed="true"] {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: #ffffff;
 }
 
 .hero {
@@ -202,7 +257,7 @@ h3 {
 .hero-text {
   max-width: 720px;
   margin: 24px 0 0;
-  color: #344761;
+  color: var(--hero-text);
   font-size: clamp(1.02rem, 2vw, 1.28rem);
   line-height: 1.7;
 }
@@ -1537,6 +1592,132 @@ textarea {
 .action-button {
   width: auto !important;
   align-self: start;
+}
+
+/* ============================================
+   Dark mode
+   ============================================ */
+[data-theme="dark"] .site-header {
+  border-bottom-color: rgba(38, 54, 77, 0.9);
+}
+
+[data-theme="dark"] .hero,
+[data-theme="dark"] .page-hero {
+  background:
+    radial-gradient(circle at 88% 18%, rgba(32, 201, 151, 0.11), transparent 34%),
+    linear-gradient(135deg, rgba(110, 168, 255, 0.14), rgba(8, 17, 31, 0.88) 58%),
+    linear-gradient(180deg, #0b1422 0%, #08111f 100%);
+}
+
+[data-theme="dark"] .hero-panel,
+[data-theme="dark"] .tool-card,
+[data-theme="dark"] .tool-shell,
+[data-theme="dark"] .seo-panel,
+[data-theme="dark"] .content-card,
+[data-theme="dark"] .contact-form-card,
+[data-theme="dark"] .modal-card {
+  background: var(--panel-bg);
+  border-color: var(--line);
+  box-shadow: var(--shadow);
+}
+
+[data-theme="dark"] .tool-shell-top,
+[data-theme="dark"] .panel,
+[data-theme="dark"] .result,
+[data-theme="dark"] .nav-dropdown,
+[data-theme="dark"] .mobile-menu,
+[data-theme="dark"] .related-links a,
+[data-theme="dark"] .faq-list details,
+[data-theme="dark"] .drop-zone,
+[data-theme="dark"] .image-preview,
+[data-theme="dark"] .pdf-page-stage,
+[data-theme="dark"] .merge-file-list,
+[data-theme="dark"] .gradient-preview {
+  background: var(--surface);
+  border-color: var(--line);
+  color: var(--ink);
+}
+
+[data-theme="dark"] .button.secondary,
+[data-theme="dark"] .icon-button,
+[data-theme="dark"] .filter:not(.active),
+[data-theme="dark"] .mobile-menu-btn {
+  background: var(--soft);
+  border-color: var(--line);
+  color: var(--ink);
+}
+
+[data-theme="dark"] .nav-links > a:hover,
+[data-theme="dark"] .nav-group:hover > a,
+[data-theme="dark"] .nav-group > a:focus,
+[data-theme="dark"] .nav-dropdown a:hover,
+[data-theme="dark"] .mobile-menu a:hover {
+  background: var(--soft);
+  color: var(--blue);
+}
+
+[data-theme="dark"] .hero-trust span {
+  background: rgba(110, 168, 255, 0.12);
+  border-color: rgba(110, 168, 255, 0.24);
+  color: var(--blue-dark);
+}
+
+[data-theme="dark"] .preview-grid span,
+[data-theme="dark"] .tool-meta,
+[data-theme="dark"] .tool-card p,
+[data-theme="dark"] .seo-panel p,
+[data-theme="dark"] .seo-panel li,
+[data-theme="dark"] .content-card p,
+[data-theme="dark"] .contact-hero p,
+[data-theme="dark"] .contact-check,
+[data-theme="dark"] .result,
+[data-theme="dark"] .form-field span {
+  color: var(--body-text);
+}
+
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea,
+[data-theme="dark"] .contact-field input,
+[data-theme="dark"] .contact-field select,
+[data-theme="dark"] .contact-field textarea,
+[data-theme="dark"] .form-field .control,
+[data-theme="dark"] .form-field textarea,
+[data-theme="dark"] .form-field select,
+[data-theme="dark"] .form-field input {
+  background: #0b1422;
+  border-color: var(--line);
+  color: var(--ink);
+}
+
+[data-theme="dark"] input::placeholder,
+[data-theme="dark"] textarea::placeholder {
+  color: #76889f;
+}
+
+[data-theme="dark"] .drop-zone:hover,
+[data-theme="dark"] .tool-card:hover {
+  border-color: var(--blue);
+}
+
+[data-theme="dark"] .merge-file-item {
+  background: #0b1422;
+  border-color: var(--line);
+}
+
+[data-theme="dark"] .merge-file-remove {
+  background: var(--rose);
+  color: #ff9fb2;
+}
+
+[data-theme="dark"] .wheel-pointer {
+  border-top-color: var(--blue-dark);
+}
+
+[data-theme="dark"] .gradient-code,
+[data-theme="dark"] .code-box {
+  background: #050b14;
+  color: #9dccff;
 }
 
 

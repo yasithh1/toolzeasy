@@ -15,7 +15,19 @@
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="manifest" href="/site.webmanifest">
   <meta name="theme-color" content="#2563eb">
-  <link rel="stylesheet" href="styles.css">
+    <script>
+    (() => {
+      let saved = null;
+      try {
+        saved = localStorage.getItem("toolzeasy-theme");
+      } catch (error) {
+        saved = null;
+      }
+      const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+      document.documentElement.dataset.theme = saved || (prefersDark ? "dark" : "light");
+    })();
+  </script>
+  <link rel="stylesheet" href="styles.css?v=20260705-dark">
     <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z15B1W6MGV"></script>
   <script>
@@ -34,6 +46,7 @@
         <div class="nav-group"><a href="/#tools">Utility</a><div class="nav-dropdown"><a href="/qr-code-generator">QR Code Generator</a><a href="/password-generator">Password Generator</a><a href="/invoice-generator">Invoice Generator</a><a href="/spin-wheel-picker">Spin Wheel Picker</a><a href="/unit-converter">Unit Converter</a></div></div>
         <a href="/about">About</a><a href="/privacy">Privacy</a>
       </nav>
+    <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch color theme" aria-pressed="false">Dark</button>
     </header>
     <main>
       <section class="contact-hero">
@@ -93,5 +106,6 @@
         if (contactStatus) contactStatus.textContent = "Sending your message...";
       });
     </script>
+    <script src="theme.js?v=20260705-dark" defer></script>
   </body>
 </html>
