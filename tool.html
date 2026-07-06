@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Opening ToolzEasy tool...</title>
+    <meta name="robots" content="noindex, follow">
+    <script>
+      (() => {
+        const validTools = new Set([
+          "pdf-merge", "pdf-split", "pdf-to-word", "pdf-to-jpg", "pdf-rotate", "pdf-protect", "word-to-pdf", "jpg-to-pdf", "pdf-signature",
+          "image-resize", "image-convert", "image-crop", "blur-or-pixelate-area", "round-corners", "image-protect-zip", "image-watermark", "image-grayscale",
+          "word-counter", "character-counter", "case-converter", "remove-line-spaces", "text-to-word", "slug-generator", "duplicate-line-remover", "line-sorter",
+          "qr-code-generator", "color-picker", "password-generator", "unit-converter", "invoice-generator", "bmi-calculator", "age-calculator", "tip-calculator",
+          "url-encoder-decoder", "base64-encoder-decoder", "random-number-generator", "spin-wheel-picker", "uuid-generator", "stopwatch", "countdown-timer"
+        ]);
+        const aliases = {
+          "merge-pdf": "pdf-merge",
+          "merger-pdf": "pdf-merge",
+          "pdf-merger": "pdf-merge",
+          "split-pdf": "pdf-split",
+          "protect-pdf": "pdf-protect",
+          "rotate-pdf": "pdf-rotate",
+          "sign-pdf": "pdf-signature"
+        };
+        const raw = new URLSearchParams(location.search).get("tool") || "";
+        const slug = raw.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+        const tool = aliases[slug] || slug;
+        location.replace(validTools.has(tool) ? `/${tool}` : "/#tools");
+      })();
+    </script>
+  </head>
+  <body>
+    <p>Opening the correct ToolzEasy tool...</p>
+    <p><a href="/#tools">Open all tools</a></p>
+  </body>
+</html>
