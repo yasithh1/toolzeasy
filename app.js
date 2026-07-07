@@ -472,7 +472,7 @@ function imageToolMarkup(tool) {
             <input id="blurStrength" type="range" min="4" max="40" value="16">
           </label>
           <button class="button secondary action-button" type="button" data-clear-shapes>🗑 Clear shapes</button>
-          <button class="button primary action-button" type="button" data-image-action>Apply &amp; Download</button>
+          <button class="button primary action-button" type="button" data-image-action>Apply</button>
           <a class="button secondary action-button" id="imageDownload" hidden>⬇ Download</a>
           <p class="helper-text" style="margin-top:8px;">1. Upload image &nbsp;2. Drag to draw shapes &nbsp;3. Click Apply</p>
         </div>
@@ -516,7 +516,7 @@ function imageToolMarkup(tool) {
             <option value="image/png">PNG</option>
             <option value="image/webp">WEBP</option>
           </select>
-          <button class="button primary action-button" type="button" data-image-action>Apply &amp; Download</button>
+          <button class="button primary action-button" type="button" data-image-action>Apply</button>
           <a class="button secondary action-button" id="imageDownload" hidden>Download</a>
           <p class="helper-text" style="margin-top:8px;">1. Upload image &nbsp;2. Add text and/or a logo &nbsp;3. Click and drag on the image to position it &nbsp;4. Download</p>
         </div>
