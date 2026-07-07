@@ -159,6 +159,7 @@ function init() {
     });
   }
   if (toolPage) renderToolPage();
+  bindDropdownNavigation();
   document.querySelectorAll("[data-close]").forEach((item) => item.addEventListener("click", closeTool));
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") closeTool();
@@ -206,6 +207,15 @@ function toggleMobileMenu() {
 }
 
 window.toggleMobileMenu = toggleMobileMenu;
+
+function bindDropdownNavigation() {
+  document.querySelectorAll(".nav-dropdown a[href^='/']").forEach((link) => {
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      window.location.assign(link.href);
+    });
+  });
+}
 
 function renderToolPage() {
   const id = resolveToolIdFromUrl();
