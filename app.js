@@ -1166,6 +1166,7 @@ async function runImageTool(tool, root, result) {
     if (shapes.length === 0) return setResult(result, "Draw at least one shape on the image first.");
     const base = root._blurBaseCanvas;
     if (!base) return setResult(result, "Upload an image first.");
+    redrawAreaPreview(root);
     const format = root.querySelector("#imgFormat")?.value || "image/jpeg";
     const quality = Number(root.querySelector("#imgQuality")?.value || 0.82);
     const blob = await canvasToBlob(base, format, quality);
@@ -1239,19 +1240,11 @@ function bindAreaSelection(root) {
   });
   root.querySelector("[data-clear-shapes]")?.addEventListener("click", () => {
     root._blurShapes = [];
-    // Reset preview back to original image
-    if (root._blurSourceImg) {
-      const base = root._blurBaseCanvas;
-      if (base) {
-        const ctx = base.getContext("2d");
-        ctx.clearRect(0, 0, base.width, base.height);
-        ctx.drawImage(root._blurSourceImg, 0, 0);
-      }
-      // Clear overlay too
-      const overlay = root._blurOverlay;
-      if (overlay) overlay.getContext("2d").clearRect(0, 0, overlay.width, overlay.height);
-    }
+    redrawAreaPreview(root);
   });
+  root.querySelector("#areaMode")?.addEventListener("change", () => redrawAreaPreview(root));
+  root.querySelector("#shapeMode")?.addEventListener("change", () => redrawAreaPreview(root));
+  root.querySelector("#blurStrength")?.addEventListener("input", () => redrawAreaPreview(root));
 }
 
 // ── Shape-draw blur/pixelate system ──────────────────────────────────────────
@@ -1295,30 +1288,41 @@ function setupShapeCanvas(root, img) {
   if (!root._blurShapes) root._blurShapes = [];
 
   let dragging = false;
+  let activePointerId = null;
   let startX = 0, startY = 0;
+  let lastX = 0, lastY = 0;
 
   function toCanvas(e) {
     const rect = overlay.getBoundingClientRect();
-    const cx = (e.touches?.[0]?.clientX ?? e.clientX) - rect.left;
-    const cy = (e.touches?.[0]?.clientY ?? e.clientY) - rect.top;
+    const cx = e.clientX - rect.left;
+    const cy = e.clientY - rect.top;
+    const scaleX = overlay.width / rect.width;
+    const scaleY = overlay.height / rect.height;
     return {
-      x: Math.max(0, Math.min(overlay.width,  (cx / rect.width)  * overlay.width)),
-      y: Math.max(0, Math.min(overlay.height, (cy / rect.height) * overlay.height))
+      x: Math.max(0, Math.min(overlay.width, cx * scaleX)),
+      y: Math.max(0, Math.min(overlay.height, cy * scaleY))
     };
   }
 
   function onDown(e) {
     e.preventDefault();
     dragging = true;
+    activePointerId = e.pointerId;
+    overlay.setPointerCapture?.(e.pointerId);
     const p = toCanvas(e);
     startX = p.x;
     startY = p.y;
+    lastX = p.x;
+    lastY = p.y;
   }
 
   function onMove(e) {
     if (!dragging) return;
+    if (activePointerId !== null && e.pointerId !== activePointerId) return;
     e.preventDefault();
     const p = toCanvas(e);
+    lastX = p.x;
+    lastY = p.y;
     const shape = {
       x: Math.min(startX, p.x),
       y: Math.min(startY, p.y),
@@ -1342,33 +1346,44 @@ function setupShapeCanvas(root, img) {
 
   function onUp(e) {
     if (!dragging) return;
+    if (activePointerId !== null && e.pointerId !== activePointerId) return;
     dragging = false;
+    overlay.releasePointerCapture?.(activePointerId);
+    activePointerId = null;
 
     // Clear the dashed outline
     overlay.getContext("2d").clearRect(0, 0, overlay.width, overlay.height);
 
-    const p = toCanvas(e || {});
     const shape = {
-      x: Math.round(Math.min(startX, p.x ?? startX)),
-      y: Math.round(Math.min(startY, p.y ?? startY)),
-      w: Math.round(Math.abs((p.x ?? startX) - startX)),
-      h: Math.round(Math.abs((p.y ?? startY) - startY))
+      x: Math.round(Math.min(startX, lastX)),
+      y: Math.round(Math.min(startY, lastY)),
+      w: Math.round(Math.abs(lastX - startX)),
+      h: Math.round(Math.abs(lastY - startY))
     };
 
     if (shape.w < 6 || shape.h < 6) return;
 
     root._blurShapes.push(shape);
 
-    // *** LIVE PREVIEW: apply blur/pixelate immediately on base canvas ***
-    applyAreaEffect(bctx, base, root, [shape]);
+    redrawAreaPreview(root);
   }
 
-  overlay.addEventListener("mousedown", onDown);
-  overlay.addEventListener("mousemove", onMove);
-  window.addEventListener("mouseup", onUp);
-  overlay.addEventListener("touchstart", onDown, { passive: false });
-  overlay.addEventListener("touchmove", onMove, { passive: false });
-  overlay.addEventListener("touchend", onUp, { passive: false });
+  overlay.addEventListener("pointerdown", onDown);
+  overlay.addEventListener("pointermove", onMove);
+  overlay.addEventListener("pointerup", onUp);
+  overlay.addEventListener("pointercancel", onUp);
+}
+
+function redrawAreaPreview(root) {
+  const base = root._blurBaseCanvas;
+  const sourceImg = root._blurSourceImg;
+  if (!base || !sourceImg) return;
+  const ctx = base.getContext("2d");
+  ctx.clearRect(0, 0, base.width, base.height);
+  ctx.drawImage(sourceImg, 0, 0, base.width, base.height);
+  applyAreaEffect(ctx, base, root);
+  const overlay = root._blurOverlay;
+  if (overlay) overlay.getContext("2d").clearRect(0, 0, overlay.width, overlay.height);
 }
 
 function applyAreaEffect(ctx, canvas, root, shapesOverride) {
@@ -1438,7 +1453,7 @@ function applyAreaEffect(ctx, canvas, root, shapesOverride) {
       buildShapePath(ctx, shapeMode, x, y, w, h);
       ctx.clip();
       // Draw blurred region back at its original canvas position
-      ctx.drawImage(blurred, ex, ey, ew, eh, ex, ey, ew, eh);
+      ctx.drawImage(blurred, 0, 0, ew, eh, ex, ey, ew, eh);
       ctx.restore();
     }
   });
