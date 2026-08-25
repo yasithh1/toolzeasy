@@ -1,7 +1,7 @@
-/blog /blog/index.html 200
-/blog/how-to-merge-pdfs-without-adobe /blog/how-to-merge-pdfs-without-adobe.html 200
-/blog/free-image-resizing-tools-compared /blog/free-image-resizing-tools-compared.html 200
-/blog/10-uses-for-qr-codes-in-2026 /blog/10-uses-for-qr-codes-in-2026.html 200
+/blog.html /blog 301
+/blog/how-to-merge-pdfs-without-adobe.html /blog/how-to-merge-pdfs-without-adobe 301
+/blog/free-image-resizing-tools-compared.html /blog/free-image-resizing-tools-compared 301
+/blog/10-uses-for-qr-codes-in-2026.html /blog/10-uses-for-qr-codes-in-2026 301
 /merge-pdf /pdf-merge 301
 /merger-pdf /pdf-merge 301
 /pdf-merger /pdf-merge 301
