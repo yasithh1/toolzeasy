@@ -119,6 +119,54 @@ const seoOverrides = {
   }
 };
 
+const keywordOverrides = {
+  "pdf-merge": ["free pdf merger no login", "combine pdf files online", "merge pdf without adobe", "join pdf documents"],
+  "pdf-split": ["split pdf online free", "extract pdf pages", "separate pdf pages no login"],
+  "pdf-to-word": ["pdf to word online free", "convert pdf text to word", "pdf to doc no signup"],
+  "pdf-to-jpg": ["pdf to jpg free", "convert pdf pages to images", "pdf image exporter"],
+  "pdf-rotate": ["rotate pdf pages online", "turn pdf pages free", "fix pdf orientation"],
+  "pdf-protect": ["protect pdf online", "password protect pdf package", "secure pdf file"],
+  "word-to-pdf": ["word to pdf free", "convert text document to pdf", "doc to pdf online"],
+  "jpg-to-pdf": ["jpg to pdf online", "images to pdf free", "png to pdf no login"],
+  "pdf-signature": ["sign pdf online free", "draw signature on pdf", "add signature to pdf"],
+  "image-resize": ["resize image online free", "change image size", "resize photo no login"],
+  "image-convert": ["convert jpg png webp", "image converter online", "jpg to png free"],
+  "image-crop": ["crop image online free", "photo crop tool", "crop picture no login"],
+  "blur-or-pixelate-area": ["blur face in image", "pixelate area online", "hide part of photo"],
+  "round-corners": ["round image corners", "rounded photo corners", "make png rounded corners"],
+  "image-protect-zip": ["password protect image", "image zip password", "encrypt photo zip"],
+  "image-watermark": ["add watermark to image", "photo watermark online", "logo watermark tool"],
+  "image-grayscale": ["convert image to grayscale", "black and white photo", "grayscale image online"],
+  "word-counter": ["word counter online", "count words free", "reading time checker"],
+  "character-counter": ["character counter online", "count letters spaces", "text length checker"],
+  "case-converter": ["uppercase lowercase converter", "title case converter", "change text case"],
+  "remove-line-spaces": ["remove blank lines", "remove extra spaces", "clean text lines"],
+  "text-to-word": ["text to word document", "download text as word", "txt to doc"],
+  "slug-generator": ["slug generator", "seo url slug", "title to slug"],
+  "duplicate-line-remover": ["remove duplicate lines", "unique lines tool", "dedupe text"],
+  "line-sorter": ["sort lines alphabetically", "alphabetize list", "line sorting tool"],
+  "qr-code-generator": ["free qr code generator", "download qr code", "qr code for url"],
+  "color-picker": ["color picker online", "hex rgb hsl picker", "pick color from input"],
+  "password-generator": ["password generator free", "strong password creator", "download password zip"],
+  "unit-converter": ["unit converter online", "length weight temperature converter", "metric imperial converter"],
+  "invoice-generator": ["free invoice generator", "invoice maker no login", "download invoice html"],
+  "bmi-calculator": ["bmi calculator online", "body mass index calculator", "healthy weight calculator"],
+  "age-calculator": ["age calculator online", "calculate age by date", "date of birth age"],
+  "tip-calculator": ["tip calculator", "split bill calculator", "restaurant tip split"],
+  "url-encoder-decoder": ["url encoder decoder", "encode url text", "decode percent encoding"],
+  "base64-encoder-decoder": ["base64 encoder decoder", "encode base64 online", "decode base64 text"],
+  "random-number-generator": ["random number generator", "number picker", "random integer tool"],
+  "spin-wheel-picker": ["spin wheel picker", "random name picker", "wheel of names alternative"],
+  "uuid-generator": ["uuid generator", "random uuid v4", "guid generator"],
+  "stopwatch": ["online stopwatch", "simple timer stopwatch", "browser stopwatch"],
+  "countdown-timer": ["countdown timer online", "simple countdown", "browser timer"]
+};
+
+tools.forEach((tool) => {
+  tool.keywords = keywordOverrides[tool.id] || [];
+  tool.searchText = [tool.name, tool.category, tool.desc, tool.id, ...tool.keywords].join(" ").toLowerCase();
+});
+
 function toolHref(tool) {
   if (location.protocol === "file:") return `${tool.id}.html`;
   return `/${tool.id}`;
@@ -146,9 +194,17 @@ let countdownTimer = null;
 
 function init() {
   if (grid) {
+    const searchTerm = new URLSearchParams(location.search).get("q");
+    if (search && searchTerm) {
+      search.value = searchTerm;
+      document.querySelector("#tools")?.scrollIntoView({ block: "start" });
+    }
     updateToolCounts();
     renderGrid();
-    search?.addEventListener("input", renderGrid);
+    search?.addEventListener("input", () => {
+      renderGrid();
+      syncSearchUrl(search.value);
+    });
     filters.forEach((button) => {
       button.addEventListener("click", () => {
         filters.forEach((item) => item.classList.remove("active"));
@@ -170,7 +226,7 @@ function init() {
 function renderGrid() {
   const term = search?.value.trim().toLowerCase() || "";
   const filtered = tools.filter((tool) => {
-    return (currentFilter === "all" || tool.category === currentFilter) && tool.name.toLowerCase().includes(term);
+    return (currentFilter === "all" || tool.category === currentFilter) && matchesSearch(tool, term);
   });
   grid.innerHTML = "";
   const noResults = document.querySelector("#noResults");
@@ -188,6 +244,22 @@ function renderGrid() {
     grid.appendChild(card);
   });
   refreshIcons();
+}
+
+function matchesSearch(tool, term) {
+  if (!term) return true;
+  const words = term.split(/\s+/).filter(Boolean);
+  return words.every((word) => tool.searchText.includes(word));
+}
+
+function syncSearchUrl(value) {
+  if (!history.replaceState) return;
+  const params = new URLSearchParams(location.search);
+  const query = value.trim();
+  if (query) params.set("q", query);
+  else params.delete("q");
+  const next = `${location.pathname}${params.toString() ? `?${params.toString()}` : ""}${location.hash}`;
+  history.replaceState(null, "", next);
 }
 
 function updateToolCounts() {
@@ -305,6 +377,9 @@ function updatePageMeta(tool, seo) {
         operatingSystem: "Web",
         url: `${location.origin}/${tool.id}`,
         description: seo.description,
+        keywords: tool.keywords.join(", "),
+        isAccessibleForFree: true,
+        featureList: seo.benefits,
         offers: { "@type": "Offer", price: "0", priceCurrency: "USD" }
       },
       {

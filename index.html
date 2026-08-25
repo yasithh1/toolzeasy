@@ -18,7 +18,7 @@
   <meta name="twitter:title" content="ToolzEasy - Free Online Tools">
   <meta name="twitter:description" content="Free tools for PDF, images, text and utilities. No login needed.">
   <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"WebSite","name":"ToolzEasy","url":"https://toolzeasy.com","description":"Free browser-based tools for PDF, images, text and utilities","potentialAction":{"@type":"SearchAction","target":"https://toolzeasy.com/?q={search_term_string}","query-input":"required name=search_term_string"}}
+  {"@context":"https://schema.org","@graph":[{"@type":"WebSite","name":"ToolzEasy","url":"https://toolzeasy.com","description":"Free browser-based tools for PDF, images, text and utilities","potentialAction":{"@type":"SearchAction","target":"https://toolzeasy.com/?q={search_term_string}","query-input":"required name=search_term_string"}},{"@type":"Organization","name":"ToolzEasy","url":"https://toolzeasy.com","logo":"https://toolzeasy.com/favicon-48.png"}]}
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -42,7 +42,7 @@
       document.documentElement.dataset.theme = saved || (prefersDark ? "dark" : "light");
     })();
   </script>
-  <link rel="stylesheet" href="styles.css?v=20260705-nav5">
+  <link rel="stylesheet" href="styles.css?v=20260825-seoblog">
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z15B1W6MGV"></script>
   <script>
@@ -121,6 +121,7 @@
       </div>
       <a href="/about" onclick="window.location.href=this.href; return false;">About</a>
       <a href="/privacy" onclick="window.location.href=this.href; return false;">Privacy</a>
+      <a href="/blog" onclick="window.location.href=this.href; return false;">Blog</a>
       <a href="/contact" onclick="window.location.href=this.href; return false;">Contact</a>
     </nav>
     <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch color theme" aria-pressed="false"></button>
@@ -129,6 +130,7 @@
       <a href="/#tools" onclick="toggleMobileMenu()">All tools</a>
       <a href="/about" onclick="toggleMobileMenu()">About</a>
       <a href="/privacy" onclick="toggleMobileMenu()">Privacy</a>
+      <a href="/blog" onclick="toggleMobileMenu()">Blog</a>
       <a href="/contact" onclick="toggleMobileMenu()">Contact</a>
     </div>
   </header>
@@ -219,6 +221,33 @@
       </div>
       <p>Almost every tool on ToolzEasy processes files directly inside your browser. No files are sent to any server. There's no account system, no file history, and no saved uploads. Just open a tool, get your result, and close the tab.</p>
     </section>
+
+    <section class="blog-preview" aria-labelledby="blogPreviewTitle">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Helpful guides</p>
+          <h2 id="blogPreviewTitle">Learn faster ways to work online</h2>
+        </div>
+        <a class="button secondary" href="/blog">View blog</a>
+      </div>
+      <div class="blog-card-grid">
+        <a class="blog-card" href="/blog/how-to-merge-pdfs-without-adobe">
+          <span>PDF guide</span>
+          <h3>How to Merge PDFs Without Adobe</h3>
+          <p>Combine reports, forms and scans with a free browser-based PDF merger.</p>
+        </a>
+        <a class="blog-card" href="/blog/free-image-resizing-tools-compared">
+          <span>Image guide</span>
+          <h3>Free Image Resizing Tools Compared</h3>
+          <p>See when to use an online resizer, desktop editor or built-in phone tool.</p>
+        </a>
+        <a class="blog-card" href="/blog/10-uses-for-qr-codes-in-2026">
+          <span>Utility guide</span>
+          <h3>10 Uses for QR Codes in 2026</h3>
+          <p>Practical QR ideas for shops, classrooms, creators and small businesses.</p>
+        </a>
+      </div>
+    </section>
   </main>
 
   <footer class="site-footer">
@@ -232,7 +261,7 @@
         <div><strong>Image Tools</strong><a href="/image-resize" onclick="window.location.href=this.href; return false;">Image Resize</a><a href="/image-crop" onclick="window.location.href=this.href; return false;">Image Crop</a><a href="/blur-or-pixelate-area" onclick="window.location.href=this.href; return false;">Blur or Pixelate</a><a href="/image-convert" onclick="window.location.href=this.href; return false;">Image Convert</a></div>
         <div><strong>Text Tools</strong><a href="/word-counter" onclick="window.location.href=this.href; return false;">Word Counter</a><a href="/case-converter" onclick="window.location.href=this.href; return false;">Case Converter</a><a href="/remove-line-spaces" onclick="window.location.href=this.href; return false;">Remove Line Spaces</a><a href="/text-to-word" onclick="window.location.href=this.href; return false;">Text to Word</a></div>
         <div><strong>Utility Tools</strong><a href="/invoice-generator" onclick="window.location.href=this.href; return false;">Invoice Generator</a><a href="/spin-wheel-picker" onclick="window.location.href=this.href; return false;">Spin Wheel Picker</a><a href="/qr-code-generator" onclick="window.location.href=this.href; return false;">QR Code Generator</a><a href="/password-generator" onclick="window.location.href=this.href; return false;">Password Generator</a></div>
-        <div><strong>Site</strong><a href="/">Home</a><a href="/about" onclick="window.location.href=this.href; return false;">About</a><a href="/contact" onclick="window.location.href=this.href; return false;">Contact</a><a href="/privacy" onclick="window.location.href=this.href; return false;">Privacy</a><a href="/terms" onclick="window.location.href=this.href; return false;">Terms</a></div>
+        <div><strong>Site</strong><a href="/">Home</a><a href="/about" onclick="window.location.href=this.href; return false;">About</a><a href="/blog" onclick="window.location.href=this.href; return false;">Blog</a><a href="/contact" onclick="window.location.href=this.href; return false;">Contact</a><a href="/privacy" onclick="window.location.href=this.href; return false;">Privacy</a><a href="/terms" onclick="window.location.href=this.href; return false;">Terms</a></div>
       </div>
     </div>
     <div class="footer-bottom"><span>(c) 2026 ToolzEasy. All rights reserved.</span><span>Built for speed. Runs in your browser.</span></div>
@@ -252,6 +281,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" defer></script>
   <script src="theme.js?v=20260705-nav5" defer></script>
-  <script src="app.js?v=20260808-blurfix" defer></script>
+  <script src="app.js?v=20260825-seoblog" defer></script>
   </body>
 </html>

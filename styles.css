@@ -581,6 +581,86 @@ textarea {
   line-height: 1.7;
 }
 
+.blog-preview,
+.blog-page,
+.article-page {
+  padding: 44px clamp(18px, 4vw, 56px);
+}
+
+.blog-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.blog-card {
+  display: grid;
+  gap: 10px;
+  min-height: 180px;
+  align-content: start;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--white);
+  box-shadow: 0 8px 28px rgba(16, 32, 51, 0.05);
+  transition: transform 160ms ease, border-color 160ms ease;
+}
+
+.blog-card:hover {
+  border-color: #8eb4ff;
+  transform: translateY(-3px);
+}
+
+.blog-card span {
+  color: var(--blue);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.blog-card h3 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 1.1rem;
+}
+
+.blog-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.article-wrap {
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.article-wrap article {
+  display: grid;
+  gap: 18px;
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--white);
+}
+
+.article-wrap h2,
+.article-wrap h3 {
+  margin-bottom: 0;
+}
+
+.article-wrap p,
+.article-wrap li {
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+.article-wrap ul,
+.article-wrap ol {
+  margin-top: 0;
+}
+
 .site-footer {
   display: flex;
   flex-wrap: wrap;
@@ -1692,6 +1772,8 @@ textarea {
 
 [data-theme="dark"] .hero-panel,
 [data-theme="dark"] .tool-card,
+[data-theme="dark"] .blog-card,
+[data-theme="dark"] .article-wrap article,
 [data-theme="dark"] .tool-shell,
 [data-theme="dark"] .seo-panel,
 [data-theme="dark"] .content-card,
@@ -1755,6 +1837,9 @@ textarea {
 [data-theme="dark"] .preview-grid span,
 [data-theme="dark"] .tool-meta,
 [data-theme="dark"] .tool-card p,
+[data-theme="dark"] .blog-card p,
+[data-theme="dark"] .article-wrap p,
+[data-theme="dark"] .article-wrap li,
 [data-theme="dark"] .seo-panel p,
 [data-theme="dark"] .seo-panel li,
 [data-theme="dark"] .content-card p,
@@ -1786,7 +1871,8 @@ textarea {
 }
 
 [data-theme="dark"] .drop-zone:hover,
-[data-theme="dark"] .tool-card:hover {
+[data-theme="dark"] .tool-card:hover,
+[data-theme="dark"] .blog-card:hover {
   border-color: var(--blue);
 }
 
